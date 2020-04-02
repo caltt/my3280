@@ -1,2 +1,3 @@
 verify username of employee, it can't be the same as an admin
-this should be done in controller
+this should be done in controller?
+no in RESTapi
