@@ -76,7 +76,7 @@ class Page
             <button class="btn btn-primary" type="submit">Login</button>
         </div>
         <div>
-            <p><a class="btn btn-primary" href="signup.php">Sign Up</a></p>
+            <p><a class="btn btn-primary" href="createAdmin.php">Sign Up</a></p>
         </div>
 
         </form>
@@ -200,7 +200,7 @@ class Page
     }
 
     // admin sign up
-    public static function signup(){ ?>
+    public static function createAdmin(){ ?>
         <form class="container" action="" method="POST">
         <div>
             <span>Username</span>
@@ -227,7 +227,7 @@ class Page
             <input class="form-control" type="text" name="company">
         </div>
         <div>
-            <button class="btn btn-primary" type="submit">Login</button>
+            <button class="btn btn-primary" type="submit" name="action" value="createAdmin">Sign Up</button>
         </div>
         </form>
 <?php

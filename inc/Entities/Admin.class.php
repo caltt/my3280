@@ -24,4 +24,8 @@ class Admin{
     public function verifyPassword($inputtedPassword){
         return password_verify($inputtedPassword, $this->password);
     }
+
+    public function jsonSerialize(){
+        return get_object_vars($this);
+    }
 }
