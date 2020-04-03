@@ -76,7 +76,7 @@ class PDOAgent
     public function singleResult()
     {
         $this->_pstmt->setFetchMode(PDO::FETCH_CLASS, $this->_className);
-        $this->_pstmt->fetch(PDO::FETCH_CLASS, $this->_className);
+        return $this->_pstmt->fetch(PDO::FETCH_CLASS);
     }
 
     public function lastInsertedId()

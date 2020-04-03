@@ -182,7 +182,7 @@ class Page
             </table>            
         </div>
         <div>
-            <button class="btn btn-primary" type="submit">Login</button>
+            <button class="btn btn-primary" type="submit" name="action" value="createEmployee">Create Employee</button>
         </div>
         </form>
 <?php

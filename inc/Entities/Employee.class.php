@@ -21,8 +21,12 @@ class Employee{
             $this->$propName = $value;
         }
     }
+
+    public function verifyPassword($inputtedPassword){
+        return password_verify($inputtedPassword, $this->password);
+    }
     
-    public function jsonSerialize(){
+    public function standardize(){
         return get_object_vars($this);
     }
 }

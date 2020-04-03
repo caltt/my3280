@@ -25,7 +25,8 @@ class Admin{
         return password_verify($inputtedPassword, $this->password);
     }
 
-    public function jsonSerialize(){
+    // stana
+    public function standardize(){
         return get_object_vars($this);
     }
 }

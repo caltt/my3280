@@ -6,7 +6,7 @@ session_start();
 if (!LoginManager::hasLoggedIn()){
     header('Location: login.php');
 }else{
-    echo 'admin homepage';
+    echo 'employee homepage';
 
     var_dump($_SESSION);
 }

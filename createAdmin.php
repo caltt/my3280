@@ -2,12 +2,18 @@
 
 require_once "inc/config.inc.php";
 
-require_once "inc/Entities/Admin.class.php";
-
+require_once "inc/Utilities/LoginManager.class.php";
 require_once "inc/Utilities/Rest.class.php";
 require_once "inc/Utilities/Page.class.php";
 
+session_start();
+
 Page::header();
+
+if (!LoginManager::hasLoggedIn()){
+    header('Location: login.php');
+}
+
 // AdminDAO::initialize();
 if (!empty($_POST) && $_POST['action'] == 'createAdmin'){
     $postData = [

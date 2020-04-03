@@ -3,7 +3,7 @@
 class LoginManager
 {
 
-    public static function hasLogin(): bool
+    public static function hasLoggedIn(): bool
     {
         if (!isset($_SESSION) && session_id() == ''){
             session_start();
@@ -16,5 +16,9 @@ class LoginManager
             header('Location: login.php');
             return false;
         }
+    }
+
+    public static function getRole(){
+        return $_SESSION['role'];
     }
 }

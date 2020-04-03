@@ -33,5 +33,13 @@ class AdminDAO{
         self::$_db->execute();
         return self::$_db->resultSet();
     }
+
+    public static function getAdmin($adminUsername){
+        $sql = "SELECT * FROM admin WHERE username = :username;";
+        self::$_db->query($sql);
+        self::$_db->bind(':username', $adminUsername);
+        self::$_db->execute();
+        return self::$_db->singleResult();
+    }
     
 }

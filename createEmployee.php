@@ -1,71 +1,63 @@
 <?php
 // config
 require_once "inc/config.inc.php";
-// entities
-require_once "inc/Entities/Job.class.php";
-require_once "inc/Entities/Admin.class.php";
-require_once "inc/Entities/Employee.class.php";
-require_once "inc/Entities/Availability.class.php";
-// utilities
-require_once "inc/Utilities/PDOAgent.class.php";
-require_once "inc/Utilities/JobDAO.class.php";
-require_once "inc/Utilities/AdminDAO.class.php";
-require_once "inc/Utilities/EmployeeDAO.class.php";
-require_once "inc/Utilities/AvailabilityDAO.class.php";
+
+require_once "inc/Utilities/LoginManager.class.php";
+require_once "inc/Utilities/Rest.class.php";
 require_once "inc/Utilities/Page.class.php";
+
+session_start();
+
+var_dump($_SESSION);
 
 Page::header();
 
-JobDAO::initialize();
-AdminDAO::initialize();
-EmployeeDAO::initialize();
-AvailabilityDAO::initialize();
+if (!LoginManager::hasLoggedIn() || LoginManager::getRole() != 'admin'){
+    header('Location: login.php');
+}
 
-if (!empty($_POST['username'])) { // MOD
-    try {
-        // check if username exists in admin & employee tables
-        $adminUsernames = [];
-        $employeeUsernames = [];
-        foreach (AdminDAO::getAdmins() as $admin) {
-            $adminUsernames[] = $admin->username;
-        }
-        foreach (EmployeeDAO::getEmployees() as $employee) {
-            $employeeUsernames[] = $employee->username;
-        }
-        if (in_array($_POST['username'], $adminUsernames) || in_array($_POST['username'], $employeeUsernames)) {
-            throw new Exception('Username already exists.');
-        }
+if (!empty($_POST) && $_POST['action'] == 'createEmployee') {
 
-        // if not exists, create new employee
-        $newEmployee = new Employee();
-        $newEmployee->username = $_POST['username'];
-        $newEmployee->fullname = $_POST['fullname'];
-        $newEmployee->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $newEmployee->email = $_POST['email'];
-        $newEmployee->phone = $_POST['phone'];
-        $newEmployee->job_id = $_POST['job_id'];
-        $newEmployee->manager_id = $_SESSION['admin_id'];
-        $result = EmployeeDAO::createEmployee($newEmployee);
+    // create ONE new row in employee table
+    $postDataEmployee = [
+        'resource' => 'employee', // specify what resource to deal with
+        'username' => $_POST['username'],
+        'password' => password_hash($_POST['username'], PASSWORD_DEFAULT),
+        'fullname' => $_POST['fullname'],
+        'email' => $_POST['email'],
+        'phone' => $_POST['phone'],
+        'job_id' => $_POST['job_id'],
+        'manager_id' => $_SESSION['admin_id'],
+    ];
 
-        $checkedShifts = array_keys($_POST, 'checked');
-        foreach ($checkedShifts as $checkedShift) {
-            $availability = new Availability();
-            $availability->employee_id = $result; // last insert id
-            $availability->day_id = substr($checkedShift, 0, 1);
-            $availability->shift_id = substr($checkedShift, 1, 1);
-            AvailabilityDAO::createAvailability($availability);
-        }
+    $resultEmployee = Rest::call('POST', $postDataEmployee);
 
-        if (!empty($result)) {
-            Page::notify($result);
-        }
-    } catch (Exception $ex) {
-        Page::notify($ex->getMessage());
+    // create MULTIPLE rows in availability table
+    $checkedShifts = array_keys($_POST, 'checked'); // get name of all checked checkboxes
+
+    // build postData for each availability row
+    foreach ($checkedShifts as $checkedShift) {
+        $postDataAvailability = [
+            'resource' => 'availability',
+            'employee_id' => $resultEmployee,   // employee_id was returned from call()
+            'day_id' => substr($checkedShift, 0, 1),    // first char of name is exactly day_id
+            'shift_id' => substr($checkedShift, 1, 1)   // second char is shift_id
+        ];
+
+        $resultAvailability = Rest::call('POST', $postDataAvailability);
+    }
+
+    if (!empty($resultEmployee)){
+        Page::notify("Employee $resultEmployee Created.");
     }
 
 }
 
-// if?
+// get all jobs for the job dropdown list
+$getData = [
+    'resource' => 'job',
+];
+$jJobs = Rest::call('GET', $getData);    // stdClass objs
 
-Page::createEmployee(JobDAO::getJobs());
+Page::createEmployee($jJobs);
 Page::footer();

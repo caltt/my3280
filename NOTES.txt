@@ -1,0 +1,4 @@
+1.  in RESTapi, a username is checked if it's already in admin/employee tables
+2.  Entity classes have a standardize() function to convert a user-defined class to the standard class.
+    This standard class is then converted to JSON
+    It's actually the jsonSerialize() function, but I think this name is a bit misleading so I changed it.

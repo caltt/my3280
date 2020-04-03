@@ -30,6 +30,14 @@ class EmployeeDAO{
         return self::$_db->resultSet();
     }
 
+    public static function getEmployee($empUsername){
+        $sql = "SELECT * FROM employee WHERE username = :username;";
+        self::$_db->query($sql);
+        self::$_db->bind(':username', $empUsername);
+        self::$_db->execute();
+        return self::$_db->singleResult();
+    }
+    
     private static function validate(){
 
     }
