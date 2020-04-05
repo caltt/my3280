@@ -5,8 +5,9 @@ class LoginManager
 
     public static function hasLoggedIn(): bool
     {
-        if (!isset($_SESSION) && session_id() == ''){
+        if (!isset($_SESSION) || session_id() == ''){
             session_start();
+            return false;
         }
 
         if (isset($_SESSION['username'])){

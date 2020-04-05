@@ -3,7 +3,7 @@
 require_once "inc/Utilities/LoginManager.class.php";
 session_start();
 
-if (!LoginManager::hasLoggedIn()){
+if (!LoginManager::hasLoggedIn() || LoginManager::getRole() != 'admin'){
     header('Location: login.php');
 }else{
     echo 'admin homepage';
@@ -14,4 +14,4 @@ if (!LoginManager::hasLoggedIn()){
 
 ?>
 <!-- test -->
-<a href="logout.php" class="btn">Log out</button>
+<a href="logout.php" class="btn">Log out</a>

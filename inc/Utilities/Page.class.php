@@ -233,6 +233,35 @@ class Page
 <?php
     }
 
+    public static function assign($jobs, $shifts){ ?>
+        <form class="container" action="" method="POST">
+        <div>
+            <span>Date</span>
+            <input class="form-control" type="date" name="date">
+        </div>
+        <div>
+            <span>Shift</span>
+            <select class="form-control" name="shift">
+<?php           foreach ($shifts as $shift){
+                    echo '<option value="' . $shift->shift_id . '">' . $shift->shift_name . '</option>';
+                } ?>
+            </select>
+        </div>
+        <div>
+            <span>Job</span>
+            <select class="form-control" name="job">
+<?php           foreach ($jobs as $job){
+                    echo '<option value="' . $job->job_id . '">' . $job->job_title . '</option>';
+                } ?>
+            </select>
+        </div>
+        <div>
+            <button class="btn btn-primary" type="submit" name="action" value="listEmployees">Confirm</button>
+        </div>
+        </form>   
+<?php
+    }
+
     
 
 }

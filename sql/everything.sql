@@ -1,11 +1,16 @@
-DROP DATABASE IF EXISTS 3280final;
-CREATE DATABASE 3280final;
-USE 3280final;
+DROP DATABASE IF EXISTS final_plus;
+CREATE DATABASE final_plus;
+USE final_plus;
 
-CREATE TABLE admin(
-    admin_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE login(
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(12) UNIQUE,
     password TINYTEXT,
+    is_admin TINYINT(1)
+);
+
+CREATE TABLE admin(
+    admin_id INT PRIMARY KEY REFERENCES login(user_id),
     fullname TINYTEXT,
     email TINYTEXT,
     phone TINYTEXT,
@@ -18,9 +23,7 @@ CREATE TABLE job(
 );
 
 CREATE TABLE employee(
-    employee_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(12) UNIQUE,
-    password TINYTEXT,
+    employee_id INT PRIMARY KEY REFERENCES login(user_id),
     fullname TINYTEXT,
     email TINYTEXT,
     phone TINYTEXT,

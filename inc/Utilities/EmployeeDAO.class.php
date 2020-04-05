@@ -8,12 +8,11 @@ class EmployeeDAO{
     }
 
     public static function createEmployee(Employee $newEmp){
-        $sql = "INSERT INTO employee(username, password, fullname, email, phone, job_id, manager_id)
-                VALUES(:username, :password, :fullname, :email, :phone, :jobid, :managerid);";
+        $sql = "INSERT INTO employee(employee_id, fullname, email, phone, job_id, manager_id)
+                VALUES(:employee_id, :fullname, :email, :phone, :jobid, :managerid);";
         
         self::$_db->query($sql);
-        self::$_db->bind(':username', $newEmp->username);
-        self::$_db->bind(':password', $newEmp->password);
+        self::$_db->bind(':employee_id', $newEmp->employee_id);
         self::$_db->bind(':fullname', $newEmp->fullname);
         self::$_db->bind(':email', $newEmp->email);
         self::$_db->bind(':phone', $newEmp->phone);
@@ -30,12 +29,24 @@ class EmployeeDAO{
         return self::$_db->resultSet();
     }
 
-    public static function getEmployee($empUsername){
-        $sql = "SELECT * FROM employee WHERE username = :username;";
+    public static function getEmployee($id){
+        $sql = "SELECT * FROM employee WHERE employee_id = :emp_id;";
         self::$_db->query($sql);
-        self::$_db->bind(':username', $empUsername);
+        self::$_db->bind(':emp_id', $id);
         self::$_db->execute();
         return self::$_db->singleResult();
+    }
+
+    // get all employees created by a certain admin
+    public static function getEmployeesByManager($managerId){
+        $sql = "SELECT * FROM employee WHERE manager_id = :manager_id;";
+        self::$_db->bind(':manager_id', $managerId);
+        self::$_db->execute();
+        return self::$_db->resultSet();
+    }
+
+    public static function getEmployeesByAvailability(){
+        
     }
     
     private static function validate(){

@@ -1,13 +1,10 @@
 <?php
 
-class Admin{
-    private $admin_id;
+class Login{
+    private $user_id;
     private $username;
     private $password;
-    private $fullname;
-    private $phone;
-    private $email;
-    private $company;
+    private $is_admin;
 
     public function __get($propName){
         if (property_exists(get_class($this), $propName)){
@@ -20,8 +17,11 @@ class Admin{
             $this->$propName = $value;
         }
     }
+    
+    public function verifyPassword($inputtedPassword){
+        return password_verify($inputtedPassword, $this->password);
+    }
 
-    // stana
     public function standardize(){
         return get_object_vars($this);
     }

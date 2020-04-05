@@ -22,7 +22,8 @@ if (!empty($_POST) && $_POST['action'] == 'createEmployee') {
     $postDataEmployee = [
         'resource' => 'employee', // specify what resource to deal with
         'username' => $_POST['username'],
-        'password' => password_hash($_POST['username'], PASSWORD_DEFAULT),
+        'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+        'is_admin' => 0,
         'fullname' => $_POST['fullname'],
         'email' => $_POST['email'],
         'phone' => $_POST['phone'],
@@ -46,18 +47,17 @@ if (!empty($_POST) && $_POST['action'] == 'createEmployee') {
 
         $resultAvailability = Rest::call('POST', $postDataAvailability);
     }
-
-    if (!empty($resultEmployee)){
+    var_dump($resultEmployee);
+    if (is_numeric($resultEmployee)){
         Page::notify("Employee $resultEmployee Created.");
+    }else{
+        Page::notify("Username already exists.");
     }
 
 }
 
 // get all jobs for the job dropdown list
-$getData = [
-    'resource' => 'job',
-];
-$jJobs = Rest::call('GET', $getData);    // stdClass objs
+$sJobs = Rest::call('GET', [ 'resource' => 'job', ]);    // stdClass objs
 
-Page::createEmployee($jJobs);
+Page::createEmployee($sJobs);
 Page::footer();

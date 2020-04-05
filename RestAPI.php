@@ -3,20 +3,26 @@
 // config
 require_once "inc/config.inc.php";
 // entities
+require_once "inc/Entities/Login.class.php";
 require_once "inc/Entities/Job.class.php";
+require_once "inc/Entities/Shift.class.php";
 require_once "inc/Entities/Admin.class.php";
 require_once "inc/Entities/Employee.class.php";
 require_once "inc/Entities/Availability.class.php";
 // utilities
 require_once "inc/Utilities/PDOAgent.class.php";
+require_once "inc/Utilities/LoginDAO.class.php";
 require_once "inc/Utilities/JobDAO.class.php";
+require_once "inc/Utilities/ShiftDAO.class.php";
 require_once "inc/Utilities/AdminDAO.class.php";
 require_once "inc/Utilities/EmployeeDAO.class.php";
 require_once "inc/Utilities/AvailabilityDAO.class.php";
 require_once "inc/Utilities/Page.class.php";
-
+ 
 // initialize DAOs
+LoginDAO::initialize();
 JobDAO::initialize();
+ShiftDAO::initialize();
 AdminDAO::initialize();
 EmployeeDAO::initialize();
 AvailabilityDAO::initialize();
@@ -30,33 +36,58 @@ $requestData = json_decode(file_get_contents('php://input'));
  *  2. check method                 *
  ************************************/
 
+if ($requestData->resource == 'login'){
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        // get single
+        if (isset($requestData->username)) {
+            $user = LoginDAO::getUser($requestData->username);
+            header('Content-Type: application/json');
+            echo json_encode($user->standardize());
+        } else {
+            // get all
+            $users = LoginDAO::getUsers(); // Login objects
+
+            // convert to stdClass obj
+            $stdUsers = [];
+            foreach ($users as $user) {
+                $stdUsers[] = $user->standardize();
+            }
+            // return json array
+            header('Content-Type: application/json');
+            echo json_encode($stdUsers);
+        }
+    }
+}
+
 if ($requestData->resource == 'admin') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        // check if username exists in admin & employee tables
-        $adminUsernames = [];
-        $employeeUsernames = [];
-        foreach (AdminDAO::getAdmins() as $admin) {
-            $adminUsernames[] = $admin->username;
+        // check if username exists in login tables
+        $usernames = [];
+        foreach (LoginDAO::getUsers() as $user) {
+            $usernames[] = $user->username;
         }
-        foreach (EmployeeDAO::getEmployees() as $employee) {
-            $employeeUsernames[] = $employee->username;
-        }
-        if (in_array($requestData->username, $adminUsernames) || in_array($requestData->username, $employeeUsernames)) {
+        if (in_array($requestData->username, $usernames)) {
             header('Content-Type: application/json');
             echo json_encode("Username already exists.");
         } else {
+            // create user login info
+            $newUser = new Login();
+            $newUser->username = $requestData->username;
+            $newUser->password = $requestData->password;
+            $newUser->is_admin = $requestData->is_admin;
+            $newAdminId = LoginDAO::createUser($newUser);
+
             // create admin
             $newAdmin = new Admin();
-            $newAdmin->username = $requestData->username;
-            $newAdmin->password = $requestData->password;
+            $newAdmin->admin_id = $newAdminId;
             $newAdmin->fullname = $requestData->fullname;
             $newAdmin->email = $requestData->email;
             $newAdmin->phone = $requestData->phone;
+            AdminDAO::createAdmin($newAdmin);
 
-            $result = AdminDAO::createAdmin($newAdmin);
             header('Content-Type: application/json');
-            echo json_encode($result);
+            echo json_encode($newAdminId);
         }
     }
 
@@ -84,40 +115,50 @@ if ($requestData->resource == 'admin') {
 
 if ($requestData->resource == 'employee') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // check if username exists in admin & employee tables
-        $adminUsernames = [];
-        $employeeUsernames = [];
-        foreach (AdminDAO::getAdmins() as $admin) {
-            $adminUsernames[] = $admin->username;
+
+        // check if username exists in login tables
+        $usernames = [];
+        foreach (LoginDAO::getUsers() as $user) {
+            $usernames[] = $user->username;
         }
-        foreach (EmployeeDAO::getEmployees() as $employee) {
-            $employeeUsernames[] = $employee->username;
-        }
-        if (in_array($requestData->username, $adminUsernames) || in_array($requestData->username, $employeeUsernames)) {
+        if (in_array($requestData->username, $usernames)) {
             header('Content-Type: application/json');
             echo json_encode("Username already exists.");
         } else {
+            // create user login info
+            $newUser = new Login();
+            $newUser->username = $requestData->username;
+            $newUser->password = $requestData->password;
+            $newUser->is_admin = $requestData->is_admin;
+            $newEmpId = LoginDAO::createUser($newUser);
+
             // create admin
-            $newEmployee = new Employee();
-            $newEmployee->username = $requestData->username;
-            $newEmployee->password = $requestData->password;
-            $newEmployee->fullname = $requestData->fullname;
-            $newEmployee->email = $requestData->email;
-            $newEmployee->phone = $requestData->phone;
-            $newEmployee->job_id = $requestData->job_id;
-            $newEmployee->manager_id = $requestData->manager_id;
-            $result = EmployeeDAO::createEmployee($newEmployee);
+            $newEmp = new Employee();
+            $newEmp->employee_id = $newEmpId;
+            $newEmp->fullname = $requestData->fullname;
+            $newEmp->email = $requestData->email;
+            $newEmp->phone = $requestData->phone;
+            $newEmp->job_id = $requestData ->job_id;
+            $newEmp->manager_id = $requestData->manager_id;
+            EmployeeDAO::createEmployee($newEmp);
+
             header('Content-Type: application/json');
-            echo json_encode($result);
+            echo json_encode($newEmpId);
         }
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        // get single
+        // get single when username is provided
         if (isset($requestData->username)) {
             $employee = EmployeeDAO::getEmployee($requestData->username);
             header('Content-Type: application/json');
             echo json_encode($employee->standardize());
+        // get eligible employees for a certain day, job and shift when date is provided (for assigning work)
+        } else if (isset($requestData->date)){
+            // filter by day and shift (from avilability table)
+            // $availableEmployees = AvailabilityDAO::
+            // then job (from job table)
+            // $employees = EmployeeDAO::getAvailableEmployees($requestData->date, $requestData->shift, $requestData->)
         } else {
             // get all
             $employees = AdminDAO::getEmployees(); // Admin objects
@@ -141,16 +182,36 @@ if ($requestData->resource == 'job') {
 
         } else {
             // get all
-            $jobs = JobDAO::getJobs(); // Admin objects
+            $jobs = JobDAO::getJobs(); 
 
-            // convert to json
-            $jJobs = [];
+            // convert to stdClass obj
+            $sJobs = [];
             foreach ($jobs as $job) {
-                $jJobs[] = $job->standardize();
+                $sJobs[] = $job->standardize();
             }
             // return json array
             header('Content-Type: application/json');
-            echo json_encode($jJobs);
+            echo json_encode($sJobs);
+        }
+    }
+}
+
+if ($requestData->resource == 'shift') {
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        // get single
+        if (isset($requestData->shift_id)) {
+
+        } else {
+            // get all
+            $shifts = ShiftDAO::getShifts(); 
+
+            $sShifts = [];
+            foreach ($shifts as $shift) {
+                $sShifts[] = $shift->standardize();
+            }
+            // return json array
+            header('Content-Type: application/json');
+            echo json_encode($sShifts);
         }
     }
 }

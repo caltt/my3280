@@ -6,20 +6,16 @@ require_once "inc/Utilities/LoginManager.class.php";
 require_once "inc/Utilities/Rest.class.php";
 require_once "inc/Utilities/Page.class.php";
 
-session_start();
-
 Page::header();
 
-if (!LoginManager::hasLoggedIn()){
-    header('Location: login.php');
-}
+// doesn't need to login
 
-// AdminDAO::initialize();
 if (!empty($_POST) && $_POST['action'] == 'createAdmin'){
     $postData = [
         'resource' => 'admin',  // specify what resource to deal with
         'username' => $_POST['username'],
-        'password' => password_hash($_POST['username'], PASSWORD_DEFAULT),
+        'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+        'is_admin' => 1,
         'fullname' => $_POST['fullname'],
         'email' => $_POST['email'],
         'phone' => $_POST['phone'],

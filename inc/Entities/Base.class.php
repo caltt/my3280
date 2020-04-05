@@ -1,14 +1,6 @@
 <?php
 
-class Admin{
-    private $admin_id;
-    private $username;
-    private $password;
-    private $fullname;
-    private $phone;
-    private $email;
-    private $company;
-
+class Base{
     public function __get($propName){
         if (property_exists(get_class($this), $propName)){
             return $this->$propName;
@@ -21,7 +13,6 @@ class Admin{
         }
     }
 
-    // stana
     public function standardize(){
         return get_object_vars($this);
     }

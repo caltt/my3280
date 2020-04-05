@@ -8,12 +8,11 @@ class AdminDAO{
     }
 
     public static function createAdmin(Admin $newAdmin){
-        $sql = "INSERT INTO admin(username, password, fullname, email, phone, company)
-                VALUES(:username, :password, :fullname, :email, :phone, :company);";
+        $sql = "INSERT INTO admin(admin_id, fullname, email, phone, company)
+                VALUES(:admin_id, :fullname, :email, :phone, :company);";
         
         self::$_db->query($sql);
-        self::$_db->bind(':username', $newAdmin->username);
-        self::$_db->bind(':password', $newAdmin->password);
+        self::$_db->bind(':admin_id', $newAdmin->admin_id);
         self::$_db->bind(':fullname', $newAdmin->fullname);
         self::$_db->bind(':email', $newAdmin->email);
         self::$_db->bind(':phone', $newAdmin->phone);
@@ -34,10 +33,10 @@ class AdminDAO{
         return self::$_db->resultSet();
     }
 
-    public static function getAdmin($adminUsername){
-        $sql = "SELECT * FROM admin WHERE username = :username;";
+    public static function getAdmin($id){
+        $sql = "SELECT * FROM admin WHERE admin_id = :id;";
         self::$_db->query($sql);
-        self::$_db->bind(':username', $adminUsername);
+        self::$_db->bind(':id', $id);
         self::$_db->execute();
         return self::$_db->singleResult();
     }

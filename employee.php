@@ -3,7 +3,7 @@
 require_once "inc/Utilities/LoginManager.class.php";
 session_start();
 
-if (!LoginManager::hasLoggedIn()){
+if (!LoginManager::hasLoggedIn() || LoginManager::getRole() != 'employee'){
     header('Location: login.php');
 }else{
     echo 'employee homepage';
