@@ -1,6 +1,6 @@
 <?php
 
-class Login{
+class User{
     private $user_id;
     private $username;
     private $password;

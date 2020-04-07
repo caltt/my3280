@@ -3,18 +3,17 @@
 class LoginManager
 {
 
-    public static function hasLoggedIn(): bool
+    public static function verifyLogin(): bool
     {
         if (!isset($_SESSION) || session_id() == ''){
             session_start();
-            return false;
         }
 
         if (isset($_SESSION['username'])){
             return true;
         }else{
             session_destroy();
-            header('Location: login.php');
+            // header('Location: login.php');
             return false;
         }
     }

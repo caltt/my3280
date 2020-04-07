@@ -16,4 +16,8 @@ class Availability{
             $this->$propName = $value;
         }
     }
+    
+    public function standardize(){
+        return get_object_vars($this);
+    }
 }

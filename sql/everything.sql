@@ -2,12 +2,12 @@ DROP DATABASE IF EXISTS final_plus;
 CREATE DATABASE final_plus;
 USE final_plus;
 
-CREATE TABLE login(
+CREATE TABLE user(
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(12) UNIQUE,
     password TINYTEXT,
     is_admin TINYINT(1)
-);
+) Engine=InnoDB; 
 
 CREATE TABLE admin(
     admin_id INT PRIMARY KEY REFERENCES login(user_id),
@@ -15,12 +15,12 @@ CREATE TABLE admin(
     email TINYTEXT,
     phone TINYTEXT,
     company TINYTEXT
-);
+) Engine=InnoDB; 
 
 CREATE TABLE job(
     job_id INT AUTO_INCREMENT PRIMARY KEY,
     job_title TINYTEXT
-);
+) Engine=InnoDB; 
 
 CREATE TABLE employee(
     employee_id INT PRIMARY KEY REFERENCES login(user_id),
@@ -29,31 +29,31 @@ CREATE TABLE employee(
     phone TINYTEXT,
     job_id INT REFERENCES job(job_id) ON DELETE CASCADE ON UPDATE CASCADE,
     manager_id INT REFERENCES admin(admin_id) ON DELETE SET NULL ON UPDATE CASCADE
-);
+) Engine=InnoDB; 
 
 CREATE TABLE day(
     day_id INT PRIMARY KEY,
     day_name TINYTEXT
-);
+) Engine=InnoDB; 
 
 CREATE TABLE shift(
     shift_id INT PRIMARY KEY,
     shift_name TINYTEXT
-);
+) Engine=InnoDB; 
 
 CREATE TABLE availability(
     employee_id INT REFERENCES employee ON DELETE CASCADE,
     day_id INT REFERENCES day ON DELETE CASCADE,
     shift_id INT REFERENCES shift ON DELETE CASCADE,
     PRIMARY KEY (employee_id, day_id, shift_id)
-);
+) Engine=InnoDB; 
 
 CREATE TABLE assignment(
     assignment_id INT AUTO_INCREMENT PRIMARY KEY,
     employee_id INT REFERENCES employee ON DELETE CASCADE,
     date DATE,
     shift_id INT REFERENCES shift ON DELETE CASCADE
-);
+) Engine=InnoDB; 
 
 INSERT INTO day VALUES(1, 'Monday');
 INSERT INTO day VALUES(2, 'Tuesday');

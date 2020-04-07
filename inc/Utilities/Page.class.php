@@ -19,8 +19,7 @@ class Page
             <title>3280 Final</title>
         </head>
         <body>
-<?php
-    }
+<?php }
 
     public static function footer()
     {?>
@@ -32,15 +31,16 @@ class Page
     </body>
     </html>
 
-<?php
-    }
+<?php }
 
+    // notify at the top
     public static function notify(string $msg)
-    {
-        // alert at the top
-        echo '<div class="alert alert-info alert-dismissible text-center">' . $msg .
-            '<button class="close" data-dismiss="alert">&times;</button></div>';
-    }
+    {?>
+        <div class="alert alert-info text-center mb-0 rounded-0 alert-dismissible fade show">
+            <?=$msg?>
+            <button class="close" data-dismiss="alert">&times;</button>
+        </div>
+<?php }
 
     public static function searchBox()
     {?>
@@ -55,38 +55,58 @@ class Page
                 <label class="custom-control-label" for="customSwitch1">Case sensitive</label>
             </div>
         </form>
-<?php
-    }   
+<?php }   
 
-    public static function navBar(){
-
-    }
+    public static function navBar()
+    {?>
+        <div class="container">
+            <!-- navbar-expand-sm: sm or larger -->
+            <nav class="navbar navbar-expand-md navbar-light">
+                <a href="#" class="navbar-brand">3280</a>
+                <!-- Burger Button -->
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="menu" class="collapse navbar-collapse">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a href="login.php" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">???</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">!!!</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+<?php }
 
     public static function login(){ ?>
-        <form class="container" action="" method="POST">
-        <div>
-            <span>User name</span>
-            <input class="form-control" type="text" name="username">
-        </div>
-        <div>
-            <span>Password</span>
-            <input class="form-control" type="text" name="password">
-        </div>
-        <div>
-            <button class="btn btn-primary" type="submit">Login</button>
-        </div>
-        <div>
-            <p><a class="btn btn-primary" href="createAdmin.php">Sign Up</a></p>
-        </div>
-
+        <form class="container w-25 text-center" action="" method="POST">
+            <div>
+                <span>User name</span>
+                <input class="form-control" type="text" name="username">
+            </div>
+            <div>
+                <span>Password</span>
+                <input class="form-control" type="text" name="password">
+            </div>
+            <div>
+                <button class="btn btn-primary my-3" type="submit">Login</button>
+            </div>
+            <div>
+                <p><a class="btn btn-primary" href="createAdmin.php">Sign Up</a></p>
+            </div>
         </form>
-<?php
-    }
+<?php }
 
     // calendar on admin's homepage
-    public static function adminCalendar(){
+    public static function adminCalendar($admin, $employees){ ?>
+        <div class="container">
+            <p>Welcome, <?=$admin->fullname?></p>
+            <p><a href="createEmployee.php" class="btn btn-primary">Create employee</a></p>
+            <p><a href="assign.php" class="btn btn-primary">Assign</a></p>
+            <p><a href="logout.php" class="btn btn-primary">Log out</a></p>
+        </div>
 
-    }
+<?php }
 
     public static function employeeCalendar(){
 
@@ -99,7 +119,7 @@ class Page
 
     // the form of creating employee
     public static function createEmployee($jobs){ ?>
-        <form class="container" action="" method="POST">
+        <form class="container w-25 text-center" action="" method="POST">
         <div>
             <span>Username</span>
             <input class="form-control" type="text" name="username">
@@ -182,57 +202,12 @@ class Page
             </table>            
         </div>
         <div>
-            <button class="btn btn-primary" type="submit" name="action" value="createEmployee">Create Employee</button>
+            <button class="btn btn-primary my-3" type="submit" name="action" value="createEmployee">Create Employee</button>
         </div>
         </form>
-<?php
-    }
+<?php }
 
-    // create shift
-    public static function createShift(){
-
-    }
-
-    // all employees group by job
-    // with delete & edit 
-    public static function listEmployees(){
-
-    }
-
-    // admin sign up
-    public static function createAdmin(){ ?>
-        <form class="container" action="" method="POST">
-        <div>
-            <span>Username</span>
-            <input class="form-control" type="text" name="username">
-        </div>
-        <div>
-            <span>Password</span>
-            <input class="form-control" type="text" name="password">
-        </div>
-        <div>
-            <span>Full Name</span>
-            <input class="form-control" type="text" name="fullname">
-        </div>
-        <div>
-            <span>Email</span>
-            <input class="form-control" type="text" name="email">
-        </div>
-        <div>
-            <span>Phone</span>
-            <input class="form-control" type="text" name="phone">
-        </div>
-        <div>
-            <span>Company</span>
-            <input class="form-control" type="text" name="company">
-        </div>
-        <div>
-            <button class="btn btn-primary" type="submit" name="action" value="createAdmin">Sign Up</button>
-        </div>
-        </form>
-<?php
-    }
-
+    // create assignment
     public static function assign($jobs, $shifts){ ?>
         <form class="container" action="" method="POST">
         <div>
@@ -256,11 +231,102 @@ class Page
             </select>
         </div>
         <div>
-            <button class="btn btn-primary" type="submit" name="action" value="listEmployees">Confirm</button>
+            <button class="btn btn-primary" type="submit" name="action" value="listEmployees">List available employees</button>
         </div>
         </form>   
-<?php
-    }
+<?php }
+
+    // available employees with checkbox for assigning work
+    // without delete & edit 
+    public static function listAvailableEmployees($employees){ ?>
+        
+        <form class="container" method="POST">
+        <table class="table">
+        <tr>
+            <td>*</td>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Phone</td>
+        </tr>
+        <?php
+        foreach ($employees as $e){
+            echo '<tr>';
+            echo '<td><input type="checkbox" name="' . $e->employee_id . '" value="checked"</td>';
+            echo '<td>' . $e->fullname . '</td>';
+            echo '<td>' . $e->email . '</td>';
+            echo '<td>' . $e->phone . '</td>';
+            echo '</tr>';
+        }
+        ?>
+        </table> 
+        <button class="btn btn-primary" name="action" value="assign">Confirm</button>
+        </form>
+<?php }
+
+    // all employees group by job
+    // with delete & edit
+    public static function listEmployees($employees){ ?>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Phone</td>
+                <td>Edit</td>
+                <td>Delete</td>
+            </tr>
+            <?php
+            foreach ($employees as $e){
+                echo '<tr>';
+                echo '<td>' . $e->name . '</td>';
+                echo '<td>' . $e->email . '</td>';
+                echo '<td>' . $e->phone . '</td>';
+                echo '<td><a href="?action=edit&id=' . $e->employee_id . '">Edit</a></td>';
+                echo '<td><a href="?action=delete&id=' . $e->employee_id . '">Delete</a></td>';
+                echo '</tr>';
+            }
+            ?>
+        </table>   
+<?php }
+
+
+    // admin sign up
+    public static function createAdmin(){ ?>
+        <form class="container w-25 text-center" action="" method="POST">
+        <div>
+            <span>Username</span>
+            <input class="form-control" type="text" name="username">
+        </div>
+        <div>
+            <span>Password</span>
+            <input class="form-control" type="password" name="password">
+        </div>
+        <div>
+            <span>Confirm password</span>
+            <input class="form-control" type="password" name="password2">
+        </div>
+        <div>
+            <span>Full Name</span>
+            <input class="form-control" type="text" name="fullname">
+        </div>
+        <div>
+            <span>Email</span>
+            <input class="form-control" type="text" name="email">
+        </div>
+        <div>
+            <span>Phone</span>
+            <input class="form-control" type="text" name="phone">
+        </div>
+        <div>
+            <span>Company</span>
+            <input class="form-control" type="text" name="company">
+        </div>
+        <div>
+            <button class="btn btn-primary my-3" type="submit" name="action" value="createAdmin">Sign Up</button>
+        </div>
+        </form>
+<?php }
+
+
 
     
 

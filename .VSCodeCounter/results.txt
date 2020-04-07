@@ -1,0 +1,59 @@
+Date : 2020-04-07 13:25:03
+Directory : e:\CSIS\CSIS-3280 Rahim\Server\Final+
+Total : 30 files,  1216 codes, 97 comments, 252 blanks, all 1565 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| PHP      |         29 |      1,155 |         97 |        239 |      1,491 |
+| SQL      |          1 |         61 |          0 |         13 |         74 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                          | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                             |         30 |      1,216 |         97 |        252 |      1,565 |
+| inc                                                                           |         20 |        769 |         25 |        132 |        926 |
+| inc\Entities                                                                  |          8 |        158 |          0 |         32 |        190 |
+| inc\Utilities                                                                 |         11 |        603 |         22 |         96 |        721 |
+| sql                                                                           |          1 |         61 |          0 |         13 |         74 |
++-------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                      | language | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\RestAPI.php                             | PHP      |        167 |         46 |         36 |        249 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\admin.php                               | PHP      |         24 |          2 |          7 |         33 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\assign.php                              | PHP      |         26 |          4 |         13 |         43 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\createAdmin.php                         | PHP      |         46 |          6 |         14 |         66 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\createEmployee.php                      | PHP      |         55 |          8 |         20 |         83 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\employee.php                            | PHP      |         12 |          0 |          5 |         17 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Entities\Admin.class.php            | PHP      |         23 |          0 |          4 |         27 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Entities\Assignment.class.php       | PHP      |         20 |          0 |          4 |         24 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Entities\Availability.class.php     | PHP      |         16 |          0 |          3 |         19 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Entities\Base.class.php             | PHP      |         16 |          0 |          3 |         19 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Entities\Employee.class.php         | PHP      |         24 |          0 |          5 |         29 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Entities\Job.class.php              | PHP      |         18 |          0 |          4 |         22 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Entities\Shift.class.php            | PHP      |         18 |          0 |          4 |         22 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Entities\User.class.php             | PHP      |         23 |          0 |          5 |         28 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\AdminDAO.class.php        | PHP      |         37 |          1 |          7 |         45 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\AssignmentDAO.class.php   | PHP      |         32 |          0 |          9 |         41 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\AvailabilityDAO.class.php | PHP      |         26 |          1 |          6 |         33 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\EmployeeDAO.class.php     | PHP      |         41 |          1 |          8 |         50 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\JobDAO.class.php          | PHP      |         21 |          0 |          4 |         25 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\LoginManager.class.php    | PHP      |         21 |          0 |          5 |         26 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\PDOAgent.class.php        | PHP      |         70 |          8 |         14 |         92 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\Page.class.php            | PHP      |        292 |         11 |         27 |        330 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\Rest.class.php            | PHP      |         19 |          0 |          7 |         26 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\ShiftDAO.class.php        | PHP      |         13 |          0 |          3 |         16 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\Utilities\UserDAO.class.php         | PHP      |         31 |          0 |          6 |         37 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\inc\config.inc.php                      | PHP      |          8 |          3 |          4 |         15 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\login.php                               | PHP      |         51 |          6 |          9 |         66 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\logout.php                              | PHP      |          4 |          0 |          1 |          5 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\report.php                              | PHP      |          1 |          0 |          2 |          3 |
+| e:\CSIS\CSIS-3280 Rahim\Server\Final+\sql\everything.sql                      | SQL      |         61 |          0 |         13 |         74 |
+| Total                                                                         |          |      1,216 |         97 |        252 |      1,565 |
++-------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

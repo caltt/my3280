@@ -2,8 +2,6 @@
 
 class Admin{
     private $admin_id;
-    private $username;
-    private $password;
     private $fullname;
     private $phone;
     private $email;
@@ -21,7 +19,6 @@ class Admin{
         }
     }
 
-    // stana
     public function standardize(){
         return get_object_vars($this);
     }

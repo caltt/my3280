@@ -30,7 +30,8 @@ class EmployeeDAO{
     }
 
     public static function getEmployee($id){
-        $sql = "SELECT * FROM employee WHERE employee_id = :emp_id;";
+        $sql = "SELECT * FROM employee 
+                WHERE employee_id = :emp_id;";
         self::$_db->query($sql);
         self::$_db->bind(':emp_id', $id);
         self::$_db->execute();
@@ -39,17 +40,12 @@ class EmployeeDAO{
 
     // get all employees created by a certain admin
     public static function getEmployeesByManager($managerId){
-        $sql = "SELECT * FROM employee WHERE manager_id = :manager_id;";
+        $sql = "SELECT * FROM employee 
+                WHERE manager_id = :manager_id;";
+        self::$_db->query($sql);
         self::$_db->bind(':manager_id', $managerId);
         self::$_db->execute();
         return self::$_db->resultSet();
     }
-
-    public static function getEmployeesByAvailability(){
-        
-    }
     
-    private static function validate(){
-
-    }
 }

@@ -2,8 +2,6 @@
 
 class Employee{
     private $employee_id;
-    private $username;
-    private $password;
     private $fullname;
     private $phone;
     private $email;

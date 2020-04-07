@@ -13,4 +13,13 @@ class JobDAO{
         self::$_db->execute();
         return self::$_db->resultSet();
     }
+
+    public static function createJob($job){
+        $sql = "INSERT INTO job(job_title) 
+                VALUES (:jobtitle);";
+        self::$_db->query($sql);
+        self::$_db->bind(':jobtitle', $job->job_title);
+        self::$_db->execute();
+        return self::$_db->lastInsertedId();
+    }
 }

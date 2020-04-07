@@ -34,7 +34,8 @@ class AdminDAO{
     }
 
     public static function getAdmin($id){
-        $sql = "SELECT * FROM admin WHERE admin_id = :id;";
+        $sql = "SELECT * FROM admin 
+                WHERE admin_id = :id;";
         self::$_db->query($sql);
         self::$_db->bind(':id', $id);
         self::$_db->execute();

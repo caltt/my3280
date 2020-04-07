@@ -2,7 +2,7 @@
 
 require_once "inc/config.inc.php";
 
-require_once "inc/Entities/Login.class.php";
+require_once "inc/Entities/User.class.php";
 require_once "inc/Entities/Admin.class.php";
 require_once "inc/Entities/Employee.class.php";
 
@@ -13,8 +13,10 @@ require_once "inc/Utilities/Page.class.php";
 var_dump($_SESSION);
 // var_dump($_SERVER);
 
+session_start();
+
 // if has already logged in
-if (LoginManager::hasLoggedIn()){
+if (LoginManager::verifyLogin()){
     if (LoginManager::getRole() == 'admin'){
         header('Location: admin.php');
     }
@@ -23,15 +25,15 @@ if (LoginManager::hasLoggedIn()){
     }
 }
 
-// check if username in admin or employee table
+// check if username exists
 if (!empty($_POST['username'])) {
-    $requestData = [
-        'resource' => 'login',
+    $data = [
+        'resource' => 'user',
         'username' => $_POST['username'],
     ];
-    $matchedUser = Rest::call('GET', $requestData);
+    $matchedUser = Rest::call('GET', $data);
     if ($matchedUser){
-        $authUser = new Login();
+        $authUser = new User();
         $authUser->user_id = $matchedUser->user_id;
         $authUser->username = $matchedUser->username;
         $authUser->password = $matchedUser->password;
